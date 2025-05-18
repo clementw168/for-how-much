@@ -28,7 +28,28 @@ A game where friends debate about how much they would pay to do something.
       ```
    - Other platforms: [See UV docs](https://docs.astral.sh/uv/getting-started/installation/)
 
-3. **Set up Python environment**:
+3. **MySQL Database Initialization**:
+   ```bash
+   # Install MySQL if not already installed
+   # For MacOS (using Homebrew):
+   brew install mysql
+   
+   # Start MySQL service
+   brew services start mysql
+   
+   # Create the database
+   mysql -u root -p
+   ```
+   Then in the MySQL prompt:
+   ```sql
+   CREATE DATABASE for_how_much;
+   CREATE USER 'your_username'@'localhost' IDENTIFIED BY 'your_password';
+   GRANT ALL PRIVILEGES ON for_how_much.* TO 'your_username'@'localhost';
+   FLUSH PRIVILEGES;
+   EXIT;
+   ```
+
+4. **Set up Python environment**:
    ```bash
    # Install and pin Python version
    uv python install 3.11
@@ -39,7 +60,7 @@ A game where friends debate about how much they would pay to do something.
    uv sync --all-extras
    ```
 
-4. **Database Setup**
+5. **Database Setup**
    Create a `.env` file in the root directory with the following content:
    ```
    DB_USER=your_username
@@ -50,13 +71,13 @@ A game where friends debate about how much they would pay to do something.
    ```
    Replace the values with your MySQL database credentials.
 
-5. **Run the database initialization and load questions from `data/data_source.csv`**:
+6. **Run the database initialization and load questions from `data/data_source.csv`**:
    ```bash
    uv run src/for_how_much/migrate/init_db.py
    uv run src/for_how_much/migrate/load_questions.py
    ```
 
-6. **Run the application**:
+7. **Run the application**:
    ```bash
    uvicorn main:app --reload
    ```
