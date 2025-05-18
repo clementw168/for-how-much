@@ -40,14 +40,6 @@ A game where friends debate about how much they would pay to do something.
    # Create the database
    mysql -u root -p
    ```
-   Then in the MySQL prompt:
-   ```sql
-   CREATE DATABASE for_how_much;
-   CREATE USER 'your_username'@'localhost' IDENTIFIED BY 'your_password';
-   GRANT ALL PRIVILEGES ON for_how_much.* TO 'your_username'@'localhost';
-   FLUSH PRIVILEGES;
-   EXIT;
-   ```
 
 4. **Set up Python environment**:
    ```bash
@@ -79,7 +71,7 @@ A game where friends debate about how much they would pay to do something.
 
 7. **Run the application**:
    ```bash
-   uvicorn main:app --reload
+   uv run uvicorn main:app --reload
    ```
 
 The API will be available at `http://localhost:8000`
