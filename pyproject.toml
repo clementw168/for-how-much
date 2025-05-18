@@ -1,0 +1,74 @@
+[project]
+name = "for-how-much"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "cryptography>=44.0.3",
+    "fastapi>=0.115.12",
+    "pydantic>=2.11.4",
+    "pymysql>=1.1.1",
+    "python-dotenv>=1.1.0",
+    "requests>=2.32.3",
+    "sqlalchemy>=2.0.41",
+    "uvicorn>=0.34.2",
+]
+authors = [
+    { name = "Clement Wang", email = "clementwang.pro@gmail.com" },
+]
+readme = "README.md"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+skip-string-normalization = true
+
+[tool.isort]
+multi_line_output = 3
+profile = "black"
+
+[tool.ruff]
+extend-exclude = []
+
+[tool.mypy]
+python_version = 3.11
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+exclude = [
+    '^tests/.*$',
+    '^build/.*$',
+    '^dist/.*$',
+    '^.*\.egg-info/.*$',
+    '^.*\.egg/.*$',
+]
+
+[tool.pyright]
+include = ["src/for_how_much"]
+exclude = []
+strict = []
+
+reportUntypedFunctionDecorator = false
+pythonVersion = "3.11"
+pythonPlatform = "Linux"
+
+[tool.pytest.ini_options]
+testpaths = ["./tests/"]
+filterwarnings = []
+
+
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9.6",
+    "isort>=5.13.2",
+    "black>=24.8.0",
+    "mypy>=1.14.1",
+    "pyright>=1.1.394",
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+    "coverage>=7.6.12",
+]
