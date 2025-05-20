@@ -8,7 +8,7 @@ def load_questions():
     db = SessionLocal()
     try:
         # Read the CSV file
-        with open("data/data_source.csv", "r") as file:
+        with open("data/data_source.csv", "r", encoding="utf-8") as file:
             csv_reader = csv.DictReader(file)
 
             # Process each row
