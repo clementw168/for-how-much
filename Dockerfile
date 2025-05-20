@@ -5,12 +5,15 @@ RUN apt-get update && \
     apt-get -y install git gcc g++ && \
     apt-get clean
 
-
 WORKDIR /src
 
-
+COPY ./pyproject.toml ./
+COPY ./uv.lock ./
 RUN pip3 install uv && \
-    uv venv
+    uv venv && \
+    uv pip install .
 
 
-CMD uv build
+COPY . .
+
+CMD ["uv", "run", "uvicorn", "main:app", "--reload"]

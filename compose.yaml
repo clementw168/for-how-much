@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      dockerfile: ./Dockerfile
+    environment:
+      - DB_HOST=database
+      - DB_USER=${DB_USER:-root}
+      - DB_PORT=${DB_PORT:-3306}
+      - DB_PASSWORD=${DB_PASSWORD:-}
+      - DB_NAME=${DB_NAME:-app}
+    ports:
+      - 12001:8000
+
+  database:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-app}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_PASSWORD: ${DB_PASSWORD:-}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    volumes:
+      - database_data:/var/lib/mysql:rw
+    # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+    # - ./docker/db/data:/var/lib/mysql:rw
+
+volumes:
+  database_data:
