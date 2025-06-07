@@ -1,4 +1,5 @@
 from sqlalchemy import JSON, Column, Float, ForeignKey, Integer, String
+from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.orm import relationship
 
 from for_how_much.database import Base
@@ -8,8 +9,9 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    questions_seen = Column(Integer, default=0)
-    answered_questions = Column(JSON, default=list)
+    token = Column(String(255), unique=True, index=True)
+    number_of_seen_questions = Column(Integer, default=0)
+    answered_questions = Column(MutableList.as_mutable(JSON), default=list)
 
 
 class Question(Base):

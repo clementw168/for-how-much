@@ -48,7 +48,8 @@ def create_database(
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS users (
                     id INT AUTO_INCREMENT PRIMARY KEY,
-                    questions_seen INT DEFAULT 0,
+                    token VARCHAR(255) UNIQUE,
+                    number_of_seen_questions INT DEFAULT 0,
                     answered_questions JSON
                 )
             """)
@@ -63,7 +64,7 @@ def create_database(
                     min_value INT,
                     max_value INT,
                     price_unit VARCHAR(10) NOT NULL,
-                    category VARCHAR(50) NOT NULL
+                    category VARCHAR(255) NOT NULL
                 )
             """)
             logger.info("Table 'questions' created or already exists")

@@ -1,6 +1,17 @@
 from pydantic import BaseModel
 
 
+class Token(BaseModel):
+    value: str
+
+
+class UserDescription(BaseModel):
+    id: int | None = None
+    number_of_seen_questions: int | None = None
+    answered_questions: list[int] | None = None
+    token: str | None = None
+
+
 class GetCategoriesOutput(BaseModel):
     categories: list[str]
 
