@@ -29,6 +29,12 @@ class QuestionService:
         categories = self.db.query(Question.category).distinct().all()
         return GetCategoriesOutput(categories=[category[0] for category in categories])
 
+    def get_categories_questions(self, categories: list[str]) -> list[str]:
+        questions = (
+            self.db.query(Question.id).filter(Question.category.in_(categories)).all()
+        )
+        return [question[0] for question in questions]
+
     def get_question(self, question_id: int) -> GetQuestionOutput:
         question = (
             self.db.query(

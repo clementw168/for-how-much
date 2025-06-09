@@ -72,14 +72,13 @@ def get_user_me(user_description: UserDescription = Depends(get_current_user)):
     return user_description
 
 
-@app.post("/user/reset_questions", response_model=UserDescription)
+@app.post("/user/reset_questions")
 def reset_user_answered_questions(
-    reset_questions: set[int],
+    reset_questions: list[int],
     user_service: UserService = Depends(get_user_service),
     user_description: UserDescription = Depends(get_current_user),
 ):
-    user_service.reset_user_answered_questions(reset_questions, user_description)
-    return user_description
+    user_service.reset_user_answered_questions(set(reset_questions), user_description)
 
 
 @app.get("/categories", response_model=GetCategoriesOutput)
@@ -88,6 +87,14 @@ def get_categories(question_service: QuestionService = Depends(get_question_serv
     Get the categories.
     """
     return question_service.get_categories()
+
+
+@app.get("/categories/questions", response_model=list[int])
+def get_categories_questions(
+    categories: list[str] = Query(..., description="List of categories to filter by"),
+    question_service: QuestionService = Depends(get_question_service),
+):
+    return question_service.get_categories_questions(categories)
 
 
 @app.get("/question/{question_id}", response_model=GetQuestionOutput)
@@ -122,8 +129,6 @@ def get_next_question(
         categories, user_description
     )
     user_service.reset_user_answered_questions(reset_questions, user_description)
-    if question is None:
-        raise HTTPException(status_code=404, detail="Question not found")
 
     return question
 
@@ -155,8 +160,8 @@ def submit_answer(
     return answer_output
 
 
-@app.post("/multiplayer_results", response_model=MultiplayerResultsOutput)
-def post_multiplayer_results(
+@app.post("/submit_answer_multiplayer", response_model=MultiplayerResultsOutput)
+def submit_answer_multiplayer(
     results: MultiplayerResultsInput,
     question_service: QuestionService = Depends(get_question_service),
     user_service: UserService = Depends(get_user_service),
@@ -167,7 +172,7 @@ def post_multiplayer_results(
     Requires authentication.
     """
     for answer in results.answers:
-        answer_output = question_service.submit_answer(
+        question_service.submit_answer(
             AnswerInput(question_id=results.question_id, answer=answer)
         )
 
